@@ -1,7 +1,7 @@
 #!/bin/bash
-set -eu
 
-#
+set -eux
+
 # REFERENCES:
 # - https://www.collabora.com/news-and-blog/blog/2017/01/16/setting-up-qemu-kvm-for-kernel-development/
 # - https://www.collabora.com/news-and-blog/blog/2017/03/13/kernel-debugging-with-qemu-overview-tools-available/
@@ -83,13 +83,10 @@ else
 	exit -1
 fi
 
-set -x
-sudo qemu-system-$ARCH				\
-	-kernel $KERNEL				\
-	-s \
-	-append "$CMD_LINE"			\
-	-smp cores=6,threads=2			\
-	--nographic				\
-	-m 1024					\
-	-net nic -net user,hostfwd=tcp::10022-:22 \
+sudo qemu-system-$ARCH					\
+	-kernel $KERNEL -s				\
+	-append "$CMD_LINE"				\
+	-smp cores=4,threads=2				\
+	--nographic -m 2048				\
+	-net nic -net user,hostfwd=tcp::10022-:22	\
 	$ARCH_OPTS
